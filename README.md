@@ -22,3 +22,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+dump table
+db:seed:dump MODELS=Category FILE=db/seeds/categories.rb EXCLUDE=none
