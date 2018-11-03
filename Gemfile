@@ -21,3 +21,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'seed_dump'
+
+#https://github.com/httprb/http
+gem 'http'
+
+#http://ruby.bastardsbook.com/chapters/html-parsing/
+gem 'nokogiri'

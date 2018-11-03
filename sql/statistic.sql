@@ -11,3 +11,6 @@ SELECT COUNT(*), status, crm_create_at FROM problems GROUP BY status, crm_create
 
 --- SELECT PROBLEM COUNT
 SELECT COUNT(*) FROM problems
+
+--- SELECT COUNT OF REPORTED PROBLEMS GROUPED BY DAY OF WEEK  (0 - 6; Sunday is 0)
+SELECT COUNT(*), EXTRACT(DOW FROM crm_create_at) AS day FROM problems GROUP BY day ORDER day;

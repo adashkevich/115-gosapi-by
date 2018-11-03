@@ -10,16 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181101201837) do
+ActiveRecord::Schema.define(version: 20181102190958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
 
+  create_table "answers", force: :cascade do |t|
+    t.string "text"
+    t.string "organization"
+    t.bigint "problem_id"
+    t.index ["problem_id"], name: "index_answers_on_problem_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "icon"
     t.string "parent_id"
     t.string "title"
+  end
+
+  create_table "change_logs", force: :cascade do |t|
+    t.string "old"
+    t.string "new"
+    t.string "field"
+    t.date "change_date", default: -> { "CURRENT_TIMESTAMP" }
+    t.bigint "problem_id"
+    t.index ["problem_id"], name: "index_change_logs_on_problem_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -42,6 +58,7 @@ ActiveRecord::Schema.define(version: 20181101201837) do
     t.integer "rating"
     t.bigint "category_id"
     t.bigint "user_id"
+    t.string "description"
     t.index ["category_id"], name: "index_problems_on_category_id"
     t.index ["user_id"], name: "index_problems_on_user_id"
   end
