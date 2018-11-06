@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'open-uri'
 
 class ParseService
@@ -25,60 +26,72 @@ class ParseService
   def save_problem(json)
     problem_id = json['id']
     problem_json = json.slice('id', 'href', 'address', 'date_create', 'organisation_id', 'status', 'rating').merge(
-      date_planned: Date.strptime(json['date_planned'], '%d.%m.%Y'),
-      crm_date_planned: Date.strptime(json['crm_date_planned'], '%Y-%m-%d'),
-      crm_create_at: Date.strptime(json['crm_create_at'], '%Y-%m-%d'),
-      user_id: json['user']['id'],
-      category_id: json['category']['id'],
-      location: "POINT(#{json['lng']} #{json['lat']})"
+        date_planned: Date.strptime(json['date_planned'], '%d.%m.%Y'),
+        crm_date_planned: Date.strptime(json['crm_date_planned'], '%Y-%m-%d'),
+        crm_create_at: Date.strptime(json['crm_create_at'], '%Y-%m-%d'),
+        user_id: json['user']['id'],
+        category_id: json['category']['id'],
+        location: "POINT(#{json['lng']} #{json['lat']})"
     )
 
-      problem = Problem.where(id: problem_id).first
-      if problem.nil?
-        problem_json.merge!(description: problem_description(problem_id))
-        problem = Problem.create problem_json
+    problem = Problem.where(id: problem_id).first
+    if problem.nil?
+      problem_json.merge!(description: problem_description(problem_id))
+      problem = Problem.create problem_json
 
-        if problem.status == '5'
+      if problem.status == '5'
+        parse_answer problem_id
+      end
+    else
+      if problem_json['organisation_id'] != problem.organisation_id
+        ChangeLog.create field: 'organisation_id', old: problem.organisation_id, new: problem_json['organisation_id'], problem_id: problem_id
+      end
+
+      if problem_json['status'] != problem.status
+        ChangeLog.create field: 'status', old: problem.status, new: problem_json['status'], problem_id: problem_id
+
+        if problem_json['status'] == '5'
           parse_answer problem_id
         end
-      else
-        if problem_json['organisation_id'] != problem.organisation_id
-          ChangeLog.create field: 'organisation_id', old: problem.organisation_id, new: problem_json['organisation_id'], problem_id: problem_id
-        end
-
-        if problem_json['status'] != problem.status
-          ChangeLog.create field: 'status', old: problem.status, new: problem_json['status'], problem_id: problem_id
-
-          if problem_json['status'] == '5'
-            parse_answer problem_id
-          end
-        end
-
-        if changed? problem_json, problem
-          Problem.find(problem_id).update problem_json
-        end
       end
+
+      if changed? problem_json, problem
+        Problem.find(problem_id).update problem_json
+      end
+    end
     # Problem.where(id: problem_id).first_or_create! problem_json
   end
 
   def problem_description(problem_id)
-    problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
-    problem_page.css('.b-current-problem__middle p')[0].text
+    begin
+      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
+      problem_page.css('.b-current-problem__middle p')[0].text
+    rescue OpenURI::HTTPError
+      p "problem #{problem_id} doesn't exist"
+      ''
+    end
   end
 
   def parse_answer(problem_id)
-    p "parse answer for problem #{problem_id}"
-    problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
-    answers = problem_page.css '.b-user-problem__answer__main'
+    begin
+      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
+      answers = problem_page.css '.b-user-problem__answer__main'
 
-    answers.each do |answer|
-      title = answer.css '.b-answer__title'
-      text = answer.css '.b-answer__main__text__itm'
+      answers.each do |answer|
+        title = answer.css '.b-answer__title'
+        text = answer.css '.b-answer__main__text__itm'
+        publish_date = answer.css '.b-answer__main__text__publish__itm__date'
 
-      if !title.empty? && !text.empty?
-        Answer.create organization: title[0].text, text: text[0].text, problem_id: problem_id
+        if !title.empty? && !text.empty? && !publish_date.empty?
+          Answer.create organization: title[0].text, text: text[0].text, publish_date: parse_answer_publish_date(publish_date[0].text), problem_id: problem_id
+        else
+          p "some answer for problem #{problem_id} hasn't all attributes"
+        end
       end
+    rescue Exception
+      p "answers parsing for problem #{problem_id} failed"
     end
+
   end
 
   def parse_answers
@@ -87,9 +100,13 @@ class ParseService
     end
   end
 
+  def parse_answer_publish_date(publish_date)
+    DateTime.parse(publish_date.gsub(/октября|ноября|декабря|января/, 'октября' => 'Oct', 'ноября' => 'Nov', 'декабря' => 'Dec'), '%d %b %H:%M')
+  end
+
   def changed?(problem_json, problem)
     problem_json['organisation_id'] != problem.organisation_id ||
-      problem_json['status'] != problem.status ||
-      problem_json['rating'].to_i != problem.rating
+        problem_json['status'] != problem.status ||
+        problem_json['rating'].to_i != problem.rating
   end
 end

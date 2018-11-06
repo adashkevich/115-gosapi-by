@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181102190958) do
+ActiveRecord::Schema.define(version: 20181104085132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20181102190958) do
     t.string "text"
     t.string "organization"
     t.bigint "problem_id"
+    t.datetime "publish_date"
     t.index ["problem_id"], name: "index_answers_on_problem_id"
   end
 
@@ -36,6 +37,12 @@ ActiveRecord::Schema.define(version: 20181102190958) do
     t.date "change_date", default: -> { "CURRENT_TIMESTAMP" }
     t.bigint "problem_id"
     t.index ["problem_id"], name: "index_change_logs_on_problem_id"
+  end
+
+  create_table "organizations", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "photos", force: :cascade do |t|
