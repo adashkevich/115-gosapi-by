@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181104085132) do
+ActiveRecord::Schema.define(version: 20181114091125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20181104085132) do
     t.string "organization"
     t.bigint "problem_id"
     t.datetime "publish_date"
+    t.boolean "is_organization"
     t.index ["problem_id"], name: "index_answers_on_problem_id"
   end
 
@@ -37,6 +38,14 @@ ActiveRecord::Schema.define(version: 20181104085132) do
     t.date "change_date", default: -> { "CURRENT_TIMESTAMP" }
     t.bigint "problem_id"
     t.index ["problem_id"], name: "index_change_logs_on_problem_id"
+  end
+
+  create_table "cities", force: :cascade do |t|
+    t.string "name"
+    t.date "from"
+    t.date "last_parsing"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -66,6 +75,7 @@ ActiveRecord::Schema.define(version: 20181104085132) do
     t.bigint "category_id"
     t.bigint "user_id"
     t.string "description"
+    t.date "date_solve"
     t.index ["category_id"], name: "index_problems_on_category_id"
     t.index ["user_id"], name: "index_problems_on_user_id"
   end

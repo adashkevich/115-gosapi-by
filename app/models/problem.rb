@@ -6,6 +6,5 @@ class Problem < ApplicationRecord
   has_many :change_logs
   has_many :answers
 
-  scope :last_updated, -> { joins('INNER JOIN "change_logs" ON "change_logs"."id" = (SELECT "id" FROM "change_logs"  WHERE "problem_id" = "problems"."id" AND "field"=\'status\' ORDER BY change_date DESC LIMIT 1)') }
-  scope :first_updated, -> { joins('INNER JOIN "change_logs" ON "change_logs"."id" = (SELECT "id" FROM "change_logs"  WHERE "problem_id" = "problems"."id" AND "field"=\'status\' ORDER BY change_date DESC LIMIT 1)') }
+  scope :joins_last_status, -> { joins('INNER JOIN "change_logs" ON "change_logs"."id" = (SELECT "id" FROM "change_logs"  WHERE "problem_id" = "problems"."id" AND "field"=\'status\' ORDER BY change_date DESC LIMIT 1)') }
 end
