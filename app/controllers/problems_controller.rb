@@ -20,7 +20,7 @@ class ProblemsController < ApplicationController
     problems = Problem.where(status: @filter).limit(100)
     problems = problems.order(crm_create_at: @order_type) if params[:order_by] == 'creating_date'
     if params[:order_by] == 'status_changing'
-      problems = problems.joins_last_status.order 'change_logs.change_date DESC'
+      problems = problems.joins_last_status.order "cl.change_date #{@order_type}"
     end
     problems
   end
@@ -40,6 +40,6 @@ class ProblemsController < ApplicationController
   end
 
   def set_order_type
-    @order_type = params[:order_type] == 'asc' ? :asc : :desc
+    @order_type = params[:order_type] == 'asc' ? 'ASC' : 'DESC'
   end
 end

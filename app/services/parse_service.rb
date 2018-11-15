@@ -57,9 +57,8 @@ class ParseService
       problem_json.merge!(description: problem_description(problem_id))
       problem = Problem.create problem_json
 
-      if problem.status == '5'
+      if problem_json['status'] == '7' || problem_json['status'] == '5'
         parse_answer problem_id
-        problem.update! date_solve: DateTime.now
       end
     else
       if problem_json['organisation_id'] != problem.organisation_id
@@ -72,10 +71,10 @@ class ParseService
       end
 
       if changed? problem_json, problem
-        problem_json.merge! date_solve: DateTime.now if solved? problem_json, problem
         Problem.find(problem_id).update problem_json
       end
     end
+    problem
   end
 
   def create_problem_json(json)
@@ -136,9 +135,5 @@ class ParseService
     problem_json['organisation_id'] != problem.organisation_id ||
         problem_json['status'] != problem.status ||
         problem_json['rating'].to_i != problem.rating
-  end
-
-  def solved?(problem_json, problem)
-    problem_json['status'] != problem.status && problem_json['status'] == '5'
   end
 end
