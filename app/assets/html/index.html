@@ -65,8 +65,12 @@
             margin-bottom: 5px;
         }
 
-        .problem-answers p{
+        .problem-answers p {
             margin-bottom: 0;
+        }
+
+        .card-body .badges h5 {
+            display: inline;
         }
     </style>
 </head>
@@ -122,9 +126,19 @@
             <h5 class="card-title">{{category_id}}</h5>
             <h6 class="card-subtitle mb-2 text-muted">{{address}}</h6>
             <p class="card-text">{{description}}</p>
+            <div class="badges">
             {{#js_if "this.status == '5'"}}<h5><span class="badge badge-success">Решено</span></h5>{{/js_if}}
+            {{#js_if "this.status == '5'"}}<h5><span class="badge badge-success">{{date date_solve}}</span></h5>{{/js_if}}
+
             {{#js_if "this.status == '7'"}}<h5><span class="badge badge-primary">На контроле</span></h5>{{/js_if}}
+            {{#js_if "this.status == '7'"}}<h5><span class="badge badge-primary">{{date date_under_control}}</span></h5>{{/js_if}}
+
             {{#js_if "this.status == '4'"}}<h5><span class="badge badge-light">В работе</span></h5>{{/js_if}}
+            {{#js_if "this.status == '4'"}}<h5><span class="badge badge-light">{{date crm_create_at}}</span></h5>{{/js_if}}
+
+            <h5><span class="badge badge-dark">{{days_in_work this}}д</span></h5>
+            </div>
+
             {{#if answers.length}}<p class="card-text"><small class="text-muted">Ответы:</small></p>{{/if}}
 
             <ul class="list-unstyled">
@@ -150,7 +164,24 @@
 
         var date_array = ruby_datetime.substr(0, 10).split('-'),
             time = ruby_datetime.substr(11, 5);
-        return date_array[2] + '/' + date_array[1] + '/' + date_array[0] + ' ' + time;
+        return date_array[2] + '.' + date_array[1] + '.' + date_array[0] + ' ' + time;
+    });
+
+    Template7.registerHelper('date', function (ruby_date, options) {
+        if (typeof ruby_date === 'function') ruby_date = condition.call(this);
+
+        var date_array = ruby_date.substr(0, 10).split('-');
+        return date_array[2] + '.' + date_array[1] + '.' + date_array[0];
+    });
+
+    Template7.registerHelper('days_in_work', function (problem, options) {
+        if (typeof problem === 'function') problem = condition.call(this);
+
+        if(problem.status === '5') {
+            return Math.floor((new Date(problem.date_solve) - new Date(problem.crm_create_at)) / (1000 * 3600 * 24));
+        }
+
+        return Math.floor((new Date() - new Date(problem.crm_create_at)) / (1000 * 3600 * 24));
     });
 
     var template = Template7.compile($('#problem-card-template').html()),
