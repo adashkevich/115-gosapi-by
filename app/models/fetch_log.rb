@@ -1,0 +1,2 @@
+class FetchLog < ApplicationRecord
+end

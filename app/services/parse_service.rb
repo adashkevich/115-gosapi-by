@@ -6,15 +6,17 @@ class ParseService
   def process
     City.all.each do |city|
       for_month = city.from.at_beginning_of_month
+      credentials = choose_city city.id
       while for_month <= Date.today.at_beginning_of_month
-        process_city city.id, for_month
+        process_month credentials, for_month
         for_month = for_month.next_month
       end
     end
   end
 
-  def process_city(city_id, month)
-    data = get_data city_id, month
+  def process_month(creds, month)
+    data = get_data creds, month
+    FetchLog.create! data: data, fetch_for: month
     data['items'].each do |problem_id, problem|
       save_user problem['user']
       save_category problem['category']
@@ -22,13 +24,17 @@ class ParseService
     end
   end
 
-  def get_data(city_id, date)
+  def choose_city(city_id)
     response = HTTP.get 'http://115.xn--90ais'
     token = get_token response
     response = HTTP.cookies(response.cookies).post "http://115.xn--90ais/city/change/#{city_id}",
-                                        form: {_token: token, _fgp: '92fda86127f364596b1d452e4e7960b3'}
-    response = HTTP.cookies(response.cookies).post 'http://115.xn--90ais/api/problem/getlist',
-                                                   form: {_token: token, date: date.strftime('%F')}
+                                                   form: {_token: token, _fgp: '92fda86127f364596b1d452e4e7960b3'}
+    {token: token, cookies: response.cookies}
+  end
+
+  def get_data(creds, date)
+    response = HTTP.cookies(creds[:cookies]).post 'http://115.xn--90ais/api/problem/getlist',
+                                                   form: {_token: creds[:token], date: date.strftime('%F')}
     JSON.parse response.body.to_s
   end
 

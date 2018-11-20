@@ -1,0 +1,48 @@
+.bootstrap-select > .dropdown-toggle .filter-option {
+    padding-right: 20px;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary {
+    color: #007bff;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary[aria-expanded="true"],
+.bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary:hover,
+.bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary:focus,
+.bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary:active {
+    color: #fff;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.header-row {
+    padding-top: 15px;
+}
+
+.problem-card {
+    margin-top: 15px;
+}
+
+@media (max-width: 575.98px) {
+    .bootstrap-select > .dropdown-toggle .filter-option {
+        display: none !important;
+    }
+
+    .bootstrap-select {
+        width: auto !important;
+    }
+}
+
+.problem-answers {
+    margin-bottom: 5px;
+}
+
+.problem-answers p {
+    margin-bottom: 0;
+}
+
+.card-body .badges h5 {
+    display: inline;
+}

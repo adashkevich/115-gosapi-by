@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181114133103) do
+ActiveRecord::Schema.define(version: 20181119201444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,13 @@ ActiveRecord::Schema.define(version: 20181114133103) do
     t.string "name"
     t.date "from"
     t.date "last_parsing"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fetch_logs", force: :cascade do |t|
+    t.json "data"
+    t.date "fetch_for"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

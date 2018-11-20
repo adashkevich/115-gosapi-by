@@ -59,3 +59,5 @@ gem 'nokogiri'
 #https://buttercms.com/blog/json-serialization-in-rails-a-complete-guide
 gem 'active_model_serializers'
 
+#https://github.com/javan/whenever
+gem 'whenever', require: false
