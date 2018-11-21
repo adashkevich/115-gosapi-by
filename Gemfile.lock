@@ -185,6 +185,8 @@ GEM
 
 PLATFORMS
   x86-mingw32
+  ruby
+  x86_64-linux
 
 DEPENDENCIES
   active_model_serializers
