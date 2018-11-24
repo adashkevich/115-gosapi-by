@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sudo kill `sudo lsof -t -i:9001`
+sudo kill `sudo lsof -t -i:3000`
