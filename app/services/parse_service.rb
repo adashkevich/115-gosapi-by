@@ -4,23 +4,32 @@ require 'open-uri'
 class ParseService
 
   def process
+    prepare
     City.all.each do |city|
       for_month = city.from.at_beginning_of_month
       credentials = choose_city city.id
       while for_month <= Date.today.at_beginning_of_month
-        process_month credentials, for_month
+        process_month credentials, for_month, city
         for_month = for_month.next_month
       end
     end
   end
 
-  def process_month(creds, month)
+  private
+
+  def prepare
+    @categories = Category.pluck(:id)
+    @users = User.pluck(:id)
+  end
+
+  def process_month(creds, month, city)
     data = get_data creds, month
+    problems = Problem.where(city_id: city.id, crm_create_at: month...month.next_month)
     FetchLog.create! data: data, fetch_for: month
     data['items'].each do |problem_id, problem|
       save_user problem['user']
       save_category problem['category']
-      save_problem problem
+      save_problem problem, problems
     end
   end
 
@@ -46,19 +55,19 @@ class ParseService
 
   def save_user(json)
     user_json = json.slice 'id', 'name', 'last_name', 'middle_name'
-    User.create user_json if User.where(id: user_json['id']).empty?
+    User.create user_json unless @users.include? user_json['id'].to_i
   end
 
   def save_category(json)
     category_json = json.slice 'id', 'parent_id', 'icon'
-    Category.create category_json if Category.where(id: category_json['id']).empty?
+    Category.create category_json unless @categories.include? category_json['id'].to_i
   end
 
-  def save_problem(json)
-    problem_id = json['id']
+  def save_problem(json, problems)
+    problem_id = json['id'].to_i
     problem_json = create_problem_json json
 
-    problem = Problem.where(id: problem_id).first
+    problem = problems.index {|p| p.id == problem_id }
     if problem.nil?
       problem_json.merge!(description: problem_description(problem_id))
       problem = Problem.create problem_json
@@ -67,6 +76,7 @@ class ParseService
         parse_answer problem_id
       end
     else
+      problem = problems[problem]
       if problem_json['organisation_id'] != problem.organisation_id
         ChangeLog.create field: 'organisation_id', old: problem.organisation_id, new: problem_json['organisation_id'], problem_id: problem_id
       end

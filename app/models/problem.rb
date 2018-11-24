@@ -5,6 +5,7 @@ class Problem < ApplicationRecord
   belongs_to :user
   has_many :change_logs
   has_many :answers
+  belongs_to :city
 
   after_create do
     ChangeLog.create field: 'status', old: nil, new: status, problem_id: id
