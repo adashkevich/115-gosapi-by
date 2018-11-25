@@ -1,10 +1,17 @@
 # README
 
+#Server
 To start app:
 install ruby
-
+##Life circle
+To start up server execute `startup.sh` script. (`./startup.sh`)  
+To shut down server execute `shutdown.sh` script. (`./shutdown.sh`) 
+#Data Base
+##Preparation
+1. Add postgis extension
+`CREATE EXTENSION postgis;`
 ##Dumping
-Dump current data base:
+Model dump rake task:
 `rake db:seed:dump MODELS=model FILE=db/seeds/model.rb EXCLUDE=none`
 
 Category params:
