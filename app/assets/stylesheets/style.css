@@ -46,3 +46,7 @@
 .card-body .badges h5 {
     display: inline;
 }
+
+.badge-info .fa-star {
+    padding-left: 2px;
+}

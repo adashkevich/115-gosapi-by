@@ -8,8 +8,9 @@ class ParseService
     City.all.each do |city|
       for_month = city.from.at_beginning_of_month
       credentials = choose_city city.id
+      @city = city
       while for_month <= Date.today.at_beginning_of_month
-        process_month credentials, for_month, city
+        process_month credentials, for_month
         for_month = for_month.next_month
       end
     end
@@ -22,9 +23,9 @@ class ParseService
     @users = User.pluck(:id)
   end
 
-  def process_month(creds, month, city)
+  def process_month(creds, month)
     data = get_data creds, month
-    problems = Problem.where(city_id: city.id, crm_create_at: month...month.next_month)
+    problems = Problem.where(city_id: @city.id, crm_create_at: month...month.next_month)
     FetchLog.create! data: data, fetch_for: month
     data['items'].each do |problem_id, problem|
       save_user problem['user']
@@ -69,7 +70,7 @@ class ParseService
 
     problem = problems.index {|p| p.id == problem_id }
     if problem.nil?
-      problem_json.merge!(description: problem_description(problem_id))
+      problem_json.merge!(description: problem_description(problem_id), city_id: @city.id)
       problem = Problem.create problem_json
 
       if problem_json['status'] == '7' || problem_json['status'] == '5'

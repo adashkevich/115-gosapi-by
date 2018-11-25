@@ -1,27 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To start app:
+install ruby
 
-Things you may want to cover:
+##Dumping
+Dump current data base:
+`rake db:seed:dump MODELS=model FILE=db/seeds/model.rb EXCLUDE=none`
 
-* Ruby version
+Category params:
+`MODELS=Category FILE=db/seeds/categories.rb EXCLUDE=none`
 
-* System dependencies
+Organization params:
+`MODELS=Organization FILE=db/seeds/organizations.rb EXCLUDE=created_at,updated_at`
 
-* Configuration
+City params:
+`MODELS=City FILE=db/seeds/cities.rb EXCLUDE=created_at,updated_at`
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-dump table
-db:seed:dump MODELS=Category FILE=db/seeds/categories.rb EXCLUDE=none
+Status params:
+`MODELS=Status FILE=db/seeds/statuses.rb EXCLUDE=none`
