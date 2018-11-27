@@ -56,7 +56,10 @@ class ParseService
 
   def save_user(json)
     user_json = json.slice 'id', 'name', 'last_name', 'middle_name'
-    User.create user_json unless @users.include? user_json['id'].to_i
+    unless @users.include? user_json['id'].to_i
+      User.create user_json
+      @users << user_json['id'].to_i
+    end
   end
 
   def save_category(json)
