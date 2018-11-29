@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181124142950) do
+ActiveRecord::Schema.define(version: 20181127201537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20181124142950) do
     t.date "date_under_control"
     t.date "date_in_progress"
     t.bigint "city_id"
+    t.integer "answers_count", default: 0
     t.index ["category_id"], name: "index_problems_on_category_id"
     t.index ["city_id"], name: "index_problems_on_city_id"
     t.index ["user_id"], name: "index_problems_on_user_id"

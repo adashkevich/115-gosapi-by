@@ -64,7 +64,10 @@ class ParseService
 
   def save_category(json)
     category_json = json.slice 'id', 'parent_id', 'icon'
-    Category.create category_json unless @categories.include? category_json['id'].to_i
+    unless @categories.include? category_json['id'].to_i
+      Category.create category_json
+      @categories << category_json['id'].to_i
+    end
   end
 
   def save_problem(json, problems)
@@ -77,7 +80,8 @@ class ParseService
       problem = Problem.create problem_json
 
       if problem_json['status'] == '7' || problem_json['status'] == '5'
-        parse_answer problem_id
+        answers_count = parse_answer problem
+        problem.update answers_count: answers_count unless answers_count == 0
       end
     else
       problem = problems[problem]
@@ -87,11 +91,13 @@ class ParseService
 
       if problem_json['status'] != problem.status
         ChangeLog.create field: 'status', old: problem.status, new: problem_json['status'], problem_id: problem_id
-        parse_answer problem_id if problem_json['status'] == '7' || problem_json['status'] == '5'
       end
 
+      p changed? problem_json, problem
       if changed? problem_json, problem
-        Problem.find(problem_id).update problem_json
+        p problem_json
+        problem_json.merge! answers_count: parse_answer(problem)
+        problem.update problem_json
       end
     end
     problem
@@ -99,12 +105,12 @@ class ParseService
 
   def create_problem_json(json)
     json.slice('id', 'href', 'address', 'date_create', 'organisation_id', 'status', 'rating').merge(
-        date_planned: Date.strptime(json['date_planned'], '%d.%m.%Y'),
-        crm_date_planned: Date.strptime(json['crm_date_planned'], '%Y-%m-%d'),
-        crm_create_at: Date.strptime(json['crm_create_at'], '%Y-%m-%d'),
-        user_id: json['user']['id'],
-        category_id: json['category']['id'],
-        location: "POINT(#{json['lng']} #{json['lat']})"
+        'date_planned' => Date.strptime(json['date_planned'], '%d.%m.%Y'),
+        'crm_date_planned' => Date.strptime(json['crm_date_planned'], '%Y-%m-%d'),
+        'crm_create_at' => Date.strptime(json['crm_create_at'], '%Y-%m-%d'),
+        'user_id' => json['user']['id'],
+        'category_id' => json['category']['id'],
+        'location' => "POINT(#{json['lng']} #{json['lat']})",
     )
   end
 
@@ -117,28 +123,32 @@ class ParseService
     end
   end
 
-  def parse_answer(problem_id)
+  def parse_answer(problem)
     begin
-      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
+      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem.id}")
       answers = problem_page.css '.b-user-problem__answer__main'
 
-      answers.each do |answer|
-        title = answer.css '.b-answer__title'
-        text = answer.css '.b-answer__main__text__itm'
-        publish_date = answer.css '.b-answer__main__text__publish__itm__date'
-        is_organization = answer.css('[assessment]').empty?
+      answers.each_with_index do |answer, index|
+        if index >= problem.answers_count
+          title = answer.css '.b-answer__title'
+          text = answer.css '.b-answer__main__text__itm'
+          publish_date = answer.css '.b-answer__main__text__publish__itm__date'
+          is_organization = answer.css('[assessment]').empty?
 
-        if !title.empty? && !text.empty? && !publish_date.empty?
-          Answer.create organization: title[0].text, text: text[0].text,
-                        publish_date: parse_answer_publish_date(publish_date[0].text),
-                        problem_id: problem_id, is_organization: is_organization
-        else
-          p "some answer for problem #{problem_id} hasn't all attributes"
+          if !title.empty? && !text.empty? && !publish_date.empty?
+            Answer.create organization: title[0].text, text: text[0].text,
+                          publish_date: parse_answer_publish_date(publish_date[0].text),
+                          problem_id: problem.id, is_organization: is_organization
+          else
+            p "some answer for problem #{problem.id} hasn't all attributes"
+          end
         end
       end
+      return answers.count
     rescue Exception
-      p "answers parsing for problem #{problem_id} failed"
+      p "answers parsing for problem #{problem.id} failed"
     end
+    problem.answers_count
   end
 
   def parse_answers

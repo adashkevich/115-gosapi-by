@@ -1,11 +1,12 @@
 class Problem < ApplicationRecord
 
-  has_one :category
   has_many :photos
-  belongs_to :user
   has_many :change_logs
   has_many :answers
-  belongs_to :city
+
+  # belongs_to :city
+  # has_one :category
+  # belongs_to :user
 
   after_create do
     ChangeLog.create field: 'status', old: nil, new: status, problem_id: id
