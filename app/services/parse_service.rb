@@ -93,9 +93,7 @@ class ParseService
         ChangeLog.create field: 'status', old: problem.status, new: problem_json['status'], problem_id: problem_id
       end
 
-      p changed? problem_json, problem
       if changed? problem_json, problem
-        p problem_json
         problem_json.merge! answers_count: parse_answer(problem)
         problem.update problem_json
       end
