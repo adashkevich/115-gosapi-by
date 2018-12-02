@@ -33,6 +33,16 @@
     .bootstrap-select {
         width: auto !important;
     }
+
+    .comments-btn span {
+        display: none;
+    }
+}
+
+@media (min-width: 575.98px) {
+    .comments-btn i {
+        display: none;
+    }
 }
 
 .problem-answers {

@@ -113,6 +113,11 @@
             </ul>
 
             <a href="http://115.xn--90ais{{href}}" class="card-link" target="_blank">Открыть на 115.бел</a>
+            {{#if comments}}
+            <a href="{{comments}}" target="_blank" role="button" class="btn btn-outline-primary float-right comments-btn">
+                <i class="far fa-comment"></i><span>Комментарии</span>
+            </a>
+            {{/if}}
         </div>
     </div>
     {{/each}}
@@ -188,14 +193,15 @@
         data.problems.forEach(function (problem) {
             prepared_data.push($.extend({}, problem, {answers: data.answers[problem.id] || []}));
         });
-        console.log(prepared_data);
+        //console.log(prepared_data);
         return prepared_data;
     }
 
     function update() {
-        console.log(getFormData());
+        var formData = getFormData();
+        //window.history.pushState('main', 'GosApi', createURI(formData));
         $.ajax(endpoint + '/api/v1/problems', {
-            data: getFormData(),
+            data: formData,
             success: function (data) {
                 $('.problem-container').empty();
                 prepareData(data).forEach(function (problem) {
@@ -203,6 +209,10 @@
                 });
             }
         });
+    }
+
+    function createURI(formData) {
+        return encodeURI('/index.html?' + $.param(formData));
     }
 
     $(function () {
