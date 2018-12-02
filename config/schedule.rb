@@ -21,6 +21,10 @@
 
 set :output, '/var/www/one-one-five-bel/log/cron_log.log'
 
-every 1.day, at: ['10:00 am', '12:00 am', '2:00 pm', '4:00 pm', '6:00 pm', '11:00 pm'] do
+every 1.day, at: ['10:00 am', '12:00 am', '2:00 pm', '4:00 pm', '6:00 pm', '10:00 pm'] do
   runner 'DataGrabberJob.perform_now'
+end
+
+every 1.day, at: '10:30 pm' do
+  runner 'AnswersFixJob.perform_now'
 end

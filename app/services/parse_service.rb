@@ -16,6 +16,34 @@ class ParseService
     end
   end
 
+  def parse_answer(problem)
+    begin
+      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem.id}")
+      answers = problem_page.css '.b-user-problem__answer__main'
+
+      answers.each_with_index do |answer, index|
+        if index >= problem.answers_count
+          title = answer.css '.b-answer__title'
+          text = answer.css '.b-answer__main__text__itm'
+          publish_date = answer.css '.b-answer__main__text__publish__itm__date'
+          is_organization = answer.css('[assessment]').empty?
+
+          if !title.empty? && !text.empty? && !publish_date.empty?
+            Answer.create organization: title[0].text, text: text[0].text,
+                          publish_date: parse_answer_publish_date(publish_date[0].text),
+                          problem_id: problem.id, is_organization: is_organization
+          else
+            p "some answer for problem #{problem.id} hasn't all attributes"
+          end
+        end
+      end
+      return answers.count
+    rescue Exception
+      p "answers parsing for problem #{problem.id} failed"
+    end
+    problem.answers_count
+  end
+
   private
 
   def prepare
@@ -119,34 +147,6 @@ class ParseService
     rescue OpenURI::HTTPError
       p "problem #{problem_id} doesn't exist"
     end
-  end
-
-  def parse_answer(problem)
-    begin
-      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem.id}")
-      answers = problem_page.css '.b-user-problem__answer__main'
-
-      answers.each_with_index do |answer, index|
-        if index >= problem.answers_count
-          title = answer.css '.b-answer__title'
-          text = answer.css '.b-answer__main__text__itm'
-          publish_date = answer.css '.b-answer__main__text__publish__itm__date'
-          is_organization = answer.css('[assessment]').empty?
-
-          if !title.empty? && !text.empty? && !publish_date.empty?
-            Answer.create organization: title[0].text, text: text[0].text,
-                          publish_date: parse_answer_publish_date(publish_date[0].text),
-                          problem_id: problem.id, is_organization: is_organization
-          else
-            p "some answer for problem #{problem.id} hasn't all attributes"
-          end
-        end
-      end
-      return answers.count
-    rescue Exception
-      p "answers parsing for problem #{problem.id} failed"
-    end
-    problem.answers_count
   end
 
   def parse_answers
