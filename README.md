@@ -1,8 +1,12 @@
 # README
 
 #Server
-To start app:
-install ruby
+Install:
+sudo apt-get install git
+sudo apt-get install ruby
+git clone https://github.com/adashkevich/one-one-five-bel.git
+sudo groupadd 115-bel-admin
+sudo usermod -a -G 115-bel-admin andrew.daskhevich
 ##Life circle
 To start up server execute `startup.sh` script. (`./startup.sh`)  
 To shut down server execute `shutdown.sh` script. (`./shutdown.sh`) 

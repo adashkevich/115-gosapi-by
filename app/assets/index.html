@@ -187,6 +187,10 @@
         };
     }
 
+    function setFormData(formData) {
+
+    }
+
     function prepareData(data) {
         var prepared_data = [];
 
@@ -199,7 +203,7 @@
 
     function update() {
         var formData = getFormData();
-        //window.history.pushState('main', 'GosApi', createURI(formData));
+        window.history.pushState('main', 'GosApi', createURI(formData));
         $.ajax(endpoint + '/api/v1/problems', {
             data: formData,
             success: function (data) {
@@ -212,7 +216,13 @@
     }
 
     function createURI(formData) {
-        return encodeURI('/index.html?' + $.param(formData));
+        var queryParams = $.extend(getQueryParams(), {filter: null, order_by: null, order_type: null}, formData);
+        return encodeURI('/index.html?' + $.param(queryParams));
+    }
+
+    function getQueryParams() {
+        // TODO implement
+        return {};
     }
 
     $(function () {
@@ -225,8 +235,8 @@
 
         $('.selectpicker.filter-status-btn, .selectpicker.sort-date-btn').change(update);
 
+        setFormData(getQueryParams());
         update();
-
     });
 </script>
 

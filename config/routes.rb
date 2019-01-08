@@ -9,5 +9,10 @@ Rails.application.routes.draw do
     get '/charts/problems_by_category'
     get '/charts/unsolved_problems_by_category'
     get '/charts/new_problems_per_day'
+
+    get '/charts/problems'
+    get '/charts/users'
+    get '/charts/organizations'
+    get '/charts/categories'
   end
 end
