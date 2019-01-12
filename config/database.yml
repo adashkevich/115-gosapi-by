@@ -84,8 +84,8 @@ test:
 #
 production:
   <<: *default
-  host: 35.246.137.175
-  port: 5432
+  host: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_HOST'] %>
+  port: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_PORT'] %>
   database: one-one-five-bel_production
   username: one-one-five-bel
-  password: "AaE*&Tnq/4#u^=cC"
+  password: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_PASSWORD'] %>
