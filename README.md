@@ -43,6 +43,9 @@ City params:
 Status params:
 `MODELS=Status FILE=db/seeds/statuses.rb EXCLUDE=none`
 
-##Scripts
-Category.where.not(parent_id: nil).order(:parent_id).each { |cat|  p "<option value=\"#{cat.id}\">#{cat.title}</option>"}
-Category.where(parent_id: nil).order(:id).each { |cat|  p "<optgroup label=\"#{cat.title}\">"}
+##Ruby Scripts
+Category.where.not(parent_id: nil).order(:parent_id).each { |cat|  p "<option value=\"#{cat.id}\">#{cat.title}</option>"}  
+Category.where(parent_id: nil).order(:id).each { |cat|  p "<optgroup label=\"#{cat.title}\">"}  
+
+##3D Party Libraries
+[Select Component](https://developer.snapappointments.com/bootstrap-select)
