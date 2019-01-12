@@ -37,10 +37,18 @@
     .comments-btn span {
         display: none;
     }
+
+    .apply-filters-btn span {
+        display: none;
+    }
 }
 
 @media (min-width: 575.98px) {
     .comments-btn i {
+        display: none;
+    }
+
+    .apply-filters-btn i {
         display: none;
     }
 }
@@ -59,4 +67,14 @@
 
 .badge-info .fa-star {
     padding-left: 2px;
+}
+
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 120px;
+}
+
+.bootstrap-select .dropdown-item.selected {
+    color: #fff;
+    text-decoration: none;
+    background-color: #007bff;
 }

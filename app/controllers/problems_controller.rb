@@ -1,5 +1,7 @@
 class ProblemsController < ApplicationController
-  before_action :set_filter, only: [:index]
+  before_action :set_status, only: [:index]
+  before_action :set_category, only: [:index]
+  before_action :set_organization, only: [:index]
   before_action :set_order_type, only: [:index]
 
   def index
@@ -17,7 +19,7 @@ class ProblemsController < ApplicationController
   end
 
   def get_problems
-    problems = Problem.where(status: @filter).limit(100)
+    problems = filter Problem.limit(100)
     problems = problems.order(crm_create_at: @order_type) if params[:order_by] == 'creating_date'
     if params[:order_by] == 'status_changing'
       problems = problems.joins_last_status.order "cl.change_date #{@order_type}"
@@ -25,18 +27,25 @@ class ProblemsController < ApplicationController
     problems
   end
 
-  def set_filter
-    @filter = []
-    params[:filter].each do |filter_str|
-      case filter_str
-      when 'resolved'
-        @filter << '5'
-      when 'under_control'
-        @filter << '7'
-      when 'in_work'
-        @filter << '4'
-      end
-    end
+  private
+
+  def filter(query)
+    query = query.where(status: @status) if @status
+    query = query.where(category_id: @category) if @category
+    query = query.where(organisation_id: @organization) if @organization
+    query
+  end
+
+  def set_status
+    @status = params[:filter].blank? ? nil : params[:filter]
+  end
+
+  def set_category
+    @category = params[:category].blank? ? nil : params[:category]
+  end
+
+  def set_organization
+    @organization = params[:organization].blank? ? nil : params[:organization]
   end
 
   def set_order_type
