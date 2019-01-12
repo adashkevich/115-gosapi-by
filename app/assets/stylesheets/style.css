@@ -1,6 +1,11 @@
 .bootstrap-select > .dropdown-toggle .filter-option {
-    padding-right: 20px;
+    padding-right: 30px;
 }
+
+.bootstrap-select > .dropdown-toggle .filter-option .filter-option-inner {
+    padding-right: 0;
+}
+
 
 .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-outline-primary {
     color: #007bff;
@@ -77,4 +82,10 @@
     color: #fff;
     text-decoration: none;
     background-color: #007bff;
+}
+
+#reportIssueGuide img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
