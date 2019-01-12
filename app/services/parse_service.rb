@@ -156,7 +156,10 @@ class ParseService
   end
 
   def parse_answer_publish_date(publish_date)
-    DateTime.parse(publish_date.gsub(/октября|ноября|декабря|января|февраля/, 'октября' => 'Oct', 'ноября' => 'Nov', 'декабря' => 'Dec', 'февраля' => 'Feb'), '%d %b %H:%M')
+    DateTime.parse(publish_date.gsub(/октября|ноября|декабря|января|февраля|марта|апреля|мая|июня|июля|августа|сентября/,
+                                     'октября' => 'Oct', 'ноября' => 'Nov', 'декабря' => 'Dec', 'января' => 'Jan',
+                                     'февраля' => 'Feb', 'марта' => 'Mar', 'апреля' => 'Apr', 'мая' => 'May', 'июня' => 'Jun',
+                                     'июля' => 'Jul', 'августа' => 'Aug', 'сентября' => 'Sep'), '%d %b %H:%M')
   end
 
   def changed?(problem_json, problem)
