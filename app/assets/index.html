@@ -360,10 +360,10 @@
     }
 
     function setFormData(formData) {
-        formData.filter && $('.selectpicker.filter-status-btn').val(formData.filter);
-        formData.category && $('.selectpicker.filter-category-btn').val(formData.category);
-        formData.organization && $('.selectpicker.filter-org-btn').val(formData.organization);
-        formData.order_by && $('.selectpicker.sort-date-btn').val(formData.order_by);
+        formData.filter && $('.selectpicker.filter-status-btn').selectpicker('val', formData.filter);
+        formData.category && $('.selectpicker.filter-category-btn').selectpicker('val', formData.category);
+        formData.organization && $('.selectpicker.filter-org-btn').selectpicker('val', formData.organization);
+        formData.order_by && $('.selectpicker.sort-date-btn').selectpicker('val', formData.order_by);
         formData.order_type && setOrderType(formData.order_type);
     }
 
