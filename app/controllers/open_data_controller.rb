@@ -1,6 +1,6 @@
 require 'csv'
 
-class ChartsController < ApplicationController
+class OpenDataController < ApplicationController
 
   def problems
     results = ActiveRecord::Base.connection.execute 'SELECT * FROM problems;'
