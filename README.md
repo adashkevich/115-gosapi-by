@@ -11,8 +11,8 @@ sudo mkdir /opt/gosapi/one-one-five-bel
 sudo groupadd 115-bel-admin  
 sudo usermod -a -G 115-bel-admin andrew.daskhevich  
 git clone https://github.com/adashkevich/one-one-five-bel.git /opt/gosapi/one-one-five-bel  
+sudo chown -R root:115-bel-admin /opt/gosapi/one-one-five-bel  
 sudo chmod -R g+rwx /opt/gosapi/one-one-five-bel  
-sudo chown -R root:ruby-admin /opt/gosapi
 sudo groupadd ruby-admin  
 sudo usermod -a -G ruby-admin andrew.daskhevich  
 sudo chown -R root:ruby-admin /var/lib/gems  

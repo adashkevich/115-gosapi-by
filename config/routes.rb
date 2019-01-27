@@ -5,10 +5,10 @@ Rails.application.routes.draw do
     get '/problems', to: 'problems#index'
 
     scope '/open_data' do
-      get '/problems', to: 'charts#problems'
-      get '/users', to: 'charts#users'
-      get '/organizations', to: 'charts#organizations'
-      get '/categories', to: 'charts#categories'
+      get '/problems', to: 'open_data#problems'
+      get '/users', to: 'open_data#users'
+      get '/organizations', to: 'open_data#organizations'
+      get '/categories', to: 'open_data#categories'
     end
   end
 end
