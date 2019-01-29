@@ -1,8 +1,8 @@
 # README
 
-#Server  
+# Server  
 
-##Installation
+## Installation
 sudo apt-get install build-essential  
 sudo apt-get install git  
 sudo apt-get install ruby  
@@ -25,14 +25,14 @@ sudo chown -R root:115-bel-admin /etc/profile.d/115-gosapi-by.sh
 sudo chmod -R g+rw /etc/profile.d/115-gosapi-by.sh  
 sudo dpkg-reconfigure tzdata
 
-##Life circle
+## Life circle
 To start up server execute `startup.sh` script. (`./startup.sh`)  
 To shut down server execute `shutdown.sh` script. (`./shutdown.sh`) 
 #Data Base
 ##Preparation
 1. Add postgis extension
 `CREATE EXTENSION postgis;`
-##Dumping
+## Dumping
 Model dump rake task:
 `rake db:seed:dump MODELS=model FILE=db/seeds/model.rb EXCLUDE=none`
 
@@ -48,10 +48,10 @@ City params:
 Status params:
 `MODELS=Status FILE=db/seeds/statuses.rb EXCLUDE=none`
 
-##Ruby Scripts
+## Ruby Scripts
 Category.where.not(parent_id: nil).order(:parent_id).each { |cat|  p "<option value=\"#{cat.id}\">#{cat.title}</option>"}  
 Category.where(parent_id: nil).order(:id).each { |cat|  p "<optgroup label=\"#{cat.title}\">"}  
 
-##3D Party Libraries
+## 3D Party Libraries
 [Select Component](https://developer.snapappointments.com/bootstrap-select)  
 [Corn Planer](https://github.com/javan/whenever)  
