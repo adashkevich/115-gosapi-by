@@ -1,0 +1,2 @@
+class MapImport < ApplicationRecord
+end

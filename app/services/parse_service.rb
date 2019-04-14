@@ -1,8 +1,8 @@
 # encoding: utf-8
+
 require 'open-uri'
 
 class ParseService
-
   def process
     prepare
     City.all.each do |city|
@@ -39,9 +39,25 @@ class ParseService
       end
       return answers.count
     rescue Exception
-      p "answers parsing for problem #{problem.id} failed"
+      log.error "answers parsing for problem #{problem.id} failed"
     end
     problem.answers_count
+  end
+
+  def parse_photo(problem_id)
+    begin
+      p "http://115.xn--90ais/problem/#{problem_id}"
+      problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
+      photos = problem_page.css('.b-problem-itm__pic').first
+
+      if photos.present?
+        photos.attr('data-before').strip!.split('|').each do |photo_link|
+          Photo.create! problem_id: problem_id, src: photo_link
+        end
+      end
+    rescue Exception
+      p "photo parsing for problem #{problem_id} failed"
+    end
   end
 
   private
@@ -72,7 +88,7 @@ class ParseService
 
   def get_data(creds, date)
     response = HTTP.cookies(creds[:cookies]).post 'http://115.xn--90ais/api/problem/getlist',
-                                                   form: {_token: creds[:token], date: date.strftime('%F')}
+                                                  form: {_token: creds[:token], date: date.strftime('%F')}
     JSON.parse response.body.to_s
   end
 
@@ -102,10 +118,11 @@ class ParseService
     problem_id = json['id'].to_i
     problem_json = create_problem_json json
 
-    problem = problems.index {|p| p.id == problem_id }
+    problem = problems.index {|p| p.id == problem_id}
     if problem.nil?
       problem_json.merge!(description: problem_description(problem_id), city_id: @city.id)
       problem = Problem.create problem_json
+      parse_photo problem.id
 
       if problem_json['status'] == '7' || problem_json['status'] == '5'
         answers_count = parse_answer problem

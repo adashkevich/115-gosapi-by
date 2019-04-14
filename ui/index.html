@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/bootstrap-select-1.13.2/bootstrap-select.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="stylesheets/svg-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+    <script src="javascripts/bootstrap-select-1.13.2/bootstrap-select.js"></script>
+    <script src="javascripts/template7/template7.js"></script>
+    <script src="javascripts/data.js" charset="UTF-8"></script>
+    <script src="javascripts/utils.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130076879-1"></script>
+    <meta charset="UTF-8">
+    <title>115 GosAPI</title>
+
+    <script>
+        // Variables
+        var endpoint = 'http://localhost:3000'; //35.204.59.90
+    </script>
+</head>
+<body class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">115.бел</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Обращения <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="charts.html">Статистика</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.html">О нас</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="row header-row justify-content-md-center">
+    <div class="col-lg-8">
+        <select class="selectpicker filter-status-btn" multiple data-style="btn-outline-primary"
+                data-none-selected-text="Статусы" data-icon="fa fa-filter" data-selected-text-format="count" data-count-selected-text="Статусы[{0}]">
+            <option value="5" selected>Решено</option>
+            <option value="7">На контроле</option>
+            <option value="4">В работе</option>
+        </select>
+
+        <select class="selectpicker filter-category-btn" multiple data-style="btn-outline-primary"
+                data-none-selected-text="Категории" data-icon="fa fa-filter" data-selected-text-format="count > 0" data-count-selected-text="Кат.[{0}]">
+
+            <optgroup label="Многоквартирные дома | Электроработы">
+                <option value="66">Иные электроработы</option>
+                <option value="67">Отсутствие освещения в подъезде</option>
+                <option value="62">Открыт электрощиток</option>
+                <option value="63">Отсутствие фасадного освещения</option>
+                <option value="64">Постоянно горит свет в подъезде</option>
+                <option value="61">Не закреплена электропроводка на лестничной клетке</option>
+            </optgroup>
+
+            <optgroup label="Многоквартирные дома | Общестроительные работы">
+                <option value="94">Течь кровли</option>
+                <option value="99">Повреждения лестничных ступеней</option>
+                <option value="369">Иные общестроительные работы в многоквартирных домах </option>
+                <option value="97">Оборваны или не закреплены водосточные трубы</option>
+                <option value="105">Отсутствует решетка для очистки обуви на крыльце</option>
+                <option value="103">Отслоение облицовочной плитки на фасаде дома</option>
+                <option value="101">Течь стыков, промерзание стыков, промерзание стеновых панелей</option>
+                <option value="104">Наличие трещин на стене</option>
+                <option value="98">Требуется ремонт отмостки</option>
+                <option value="100">Повреждения входной двери в подъезд, подвал</option>
+                <option value="102">Выветривание швов кирпичной кладки</option>
+            </optgroup>
+
+            <optgroup label="Многоквартирные дома | Текущий ремонт жилфонда за счет средств плательщиков">
+                <option value="115">Состояние покрытий полов</option>
+                <option value="111">Требуется восстановление штукатурки и облицовки стен, потолков</option>
+                <option value="112">Выбоины, неровности , трещины стен и потолка</option>
+                <option value="117">Требуется окраска стен, потолков, трубопроводов</option>
+                <option value="118">Иной ремонт многоквартирные домов за счёт средств плательщиков</option>
+            </optgroup>
+
+            <optgroup label="Многоквартирные дома | Неисправность лифта">
+                <option value="142">Лифт не работает</option>
+                <option value="138">Не работают кнопки управления лифтом</option>
+                <option value="137">Иные неисправности лифта</option>
+                <option value="109">Поврежден корпус кабины лифта</option>
+                <option value="140">Отсутствует (недостаточное) освещение кабины лифта</option>
+            </optgroup>
+
+            <optgroup label="Многоквартирные дома | Санитарное состояние">
+                <option value="153">Наличие грызунов или насекомых</option>
+                <option value="152">Загромождение вспомогательных помещений</option>
+                <option value="151">Не убраны от мусора вспомогательные помещения</option>
+                <option value="154">Не вымыты окна в подъезде</option>
+                <option value="156">Иное санитарное состояние многоквартирных дома</option>
+            </optgroup>
+
+            <optgroup label="Инфраструктура города | Дороги, тротуары">
+                <option value="282">Неисправный светофор</option>
+                <option value="297">Проблемы с гаражами / автостоянками / парковками</option>
+                <option value="285">Неубранная проезжая часть/тротуар</option>
+                <option value="364">Иные дорожные проблемы,тротуары</option>
+                <option value="292">Отсутсвует или повреждена дорожная разметка</option>
+                <option value="281">Неисправное освещение на проезжей части</option>
+                <option value="283">Некачественная укладка плитки на тротуаре</option>
+                <option value="280">Брошенный автомобиль на проезжей части</option>
+                <option value="284">Некачественное содержание велодорожек</option>
+                <option value="287">Нечитаемые/поврежденные/неправильно установленные дорожные знаки</option>
+                <option value="289">Поврежденные искусственные дорожные неровности</option>
+                <option value="286">Повреждение уличной лестницы</option>
+                <option value="291">Просадка люка/Незакрытый люк</option>
+                <option value="295">Некачественное содержание подземных и надземных пешеходных переходов</option>
+                <option value="293">Ямы/выступы на проезжей части/тротуаре</option>
+                <option value="290">Подтопление проезжей части</option>
+                <option value="294">Неисправность/недоступность инфраструктуры для маломобильных граждан</option>
+                <option value="296">Благоустройство улиц</option>
+            </optgroup>
+
+            <optgroup label="Инфраструктура города | Парки, скверы">
+                <option value="301">Некачественное содержание инфраструктуры в парках / скверах</option>
+                <option value="303">Требуется посадка деревьев, кустарников</option>
+                <option value="304">Необходим снос сухих и аварийных деревьев</option>
+                <option value="302">Иное парки, скверы </option>
+                <option value="299">Неисправность освещения</option>
+            </optgroup>
+
+            <optgroup label="Инфраструктура города | Рекламные и информационные конструкции">
+                <option value="307">Иные рекламные и информационные конструкции </option>
+                <option value="306">Ненадлежащее состояние рекламной конструкции</option>
+            </optgroup>
+
+            <optgroup label="Инфраструктура города | Общественный транспорт, остановки общественного транспорта">
+                <option value="310">Грязь/мусор на остановках общественного транспорта</option>
+                <option value="315">Повреждение остановочных указателей маршрутов</option>
+                <option value="311">Несанкционированные надписи, изображения на остановках общественного транспорта</option>
+                <option value="367">Иное ОТ и остановки</option>
+                <option value="312">Отсутствие остановочных указателей маршрутов</option>
+                <option value="313">Отсутствие урны</option>
+                <option value="314">Повреждение остановки общественного транспорта</option>
+            </optgroup>
+
+            <optgroup label="Дворовые территории | Благоустройство территории">
+                <option value="28">Состояние площадок для выгула домашних животных</option>
+                <option value="26">Наличие выбоин и ям на проезжей части двора</option>
+                <option value="37">Техническое состояние покрытий пешеходных дорожек, парковок</option>
+                <option value="371">Отсутствие дворового освещения</option>
+                <option value="372">Просадка люка/незакрытый люк</option>
+                <option value="325">Иные проблемы благоустройства территорий</option>
+                <option value="36">Содержание пешеходных лестниц</option>
+                <option value="33">Техническое состояние контейнеров для сбора отходов</option>
+                <option value="34">Cостояние ограждения контейнерной площадки</option>
+                <option value="370">Наличие просадки грунта вокруг технических колодцев</option>
+                <option value="29">Содержание и техническое состояние оборудования детской площадки</option>
+                <option value="27">Обрезка, посадка, и снос деревьев и кустарников</option>
+                <option value="30">Наличие и техническое состояние скамеек, урн, цветочниц, беседок и др.</option>
+                <option value="25">Брошенные автомобили</option>
+                <option value="38">Содержание песочниц и наличие в них песка</option>
+                <option value="324">Требуется ремонт (установка) ограждения</option>
+            </optgroup>
+
+            <optgroup label="Дворовые территории | Санитарное состояние">
+                <option value="48">Иное санитарное состояние дворовой территории</option>
+                <option value="41">Не вывезены контейнеры с твердыми коммунальными отходами</option>
+                <option value="46">Не скошен газон</option>
+                <option value="40">Не убрана дворовая территория</option>
+                <option value="42">Не убрана контейнерная площадка</option>
+                <option value="47">Не очищены урны</option>
+                <option value="45">Не вывезен крупногабаритный мусор</option>
+                <option value="43">Не выполнена противогололедная обработка</option>
+                <option value="44">Наличие безнадзорных животных на территории</option>
+            </optgroup>
+
+            <optgroup label="Многоквартирные дома | Общие проблемы, неисправности, повреждения">
+                <option value="52">Несанкционированные объявления, надписи и рисунки на фасадах</option>
+                <option value="55">Протечка воды на дворовую территорию, во вспомогательные помещения</option>
+                <option value="57">Иные общие проблемы, неисправности, повреждения</option>
+                <option value="54">Протечка канализационных стоков на дворовую территорию, во вспомогательные помещения</option>
+            </optgroup>
+        </select>
+
+        <select class="selectpicker filter-org-btn" multiple data-style="btn-outline-primary" data-icon="fa fa-filter"
+                data-none-selected-text="Организации" data-selected-text-format="count > 0" data-count-selected-text="Орг.[{0}]">
+
+            <option value="472">ЖЭУ-9 КЖРЭУП «Сельмашевское»</option>
+            <option value="444">Гомельский филиал РУП «Белтелеком»</option>
+            <option value="443">ГП «СМЭП Гомельского облисполкома»</option>
+            <option value="440">Автобусный парк №1 г.Гомель</option>
+            <option value="439">КПУП «Гомельский городской информационный центр»</option>
+            <option value="438">ДКСУП «Красная гвоздика» г.Гомель</option>
+            <option value="437">КПУП «Гомельводоканал»</option>
+            <option value="435">Гомельский филиал РУП «Белтелеком»</option>
+            <option value="428">КАУП по СД "ГорСап"</option>
+            <option value="427">ГП «СМЭП Гомельского облисполкома»</option>
+            <option value="426">ДКПУП «Гомельгорсвет»</option>
+            <option value="425">ЗАО «Гомельлифт»</option>
+            <option value="424">КУП «Спецкоммунтранс» г.Гомель</option>
+            <option value="423">КЖРЭУП «Сельмашевское»</option>
+            <option value="422">КЖРЭУП «Центральное»</option>
+            <option value="421">КЖРЭУП «Советское»</option>
+            <option value="420">КЖРЭУП «Новобелицкое Гомель»</option>
+            <option value="419">КЖРЭУП «Железнодорожное»</option>
+            <option value="418">КУП «ГГДСРТ»</option>
+            <option value="467">ЖЭУ-2 КЖРЭУП «Сельмашевское»</option>
+            <option value="471">КЖРЭУП «Сельмашевское»</option>
+            <option value="470">ЖЭУ-6 КЖРЭУП «Сельмашевское» </option>
+            <option value="468">ЖЭУ-1 КЖРЭУП «Сельмашевское» </option>
+            <option value="469">ЖЭУ-4 КЖРЭУП «Сельмашевское» </option>
+            <option value="543">РПУП "Гомельоблгаз" филиал "Гомельское производственное управление"</option>
+            <option value="537">Филиал «Гомельские тепловые сети»</option>
+        </select>
+
+        <select class="selectpicker sort-date-btn" data-style="btn-outline-secondary" data-icon="fa fa-sort">
+            <option value="creating_date" title="Создание">Дата Создание</option>
+            <option value="status_changing" title="Изменение" selected>Дата изменение статуса</option>
+        </select>
+
+        <button type="button" class="btn btn-outline-secondary sort-order-btn"><i class="fa fa-sort-amount-down"></i></button>
+
+        <button type="button" class="btn btn-outline-danger float-right apply-filters-btn">
+            <i class="fas fa-check"></i><span>Применить</span>
+        </button>
+    </div>
+</div>
+
+
+<div class="row justify-content-md-center">
+    <div class="col-lg-8 problem-container">
+
+    </div>
+</div>
+
+<script id="problem-card-template" type="text/template7">
+    {{each #problems}}
+    <div class="card problem-card">
+        <div class="card-body">
+            <h5 class="card-title">{{icon category_id}}<span>{{title category_id}}</span></h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{address}}</h6>
+            <p class="card-text">{{description}}</p>
+            <div class="badges">
+                {{#js_if "this.status == '5'"}}<h5><span class="badge badge-success">Решено</span></h5>{{/js_if}}
+                {{#js_if "this.status == '5'"}}<h5><span class="badge badge-success">{{date date_solve}}</span></h5>{{/js_if}}
+
+                {{#js_if "this.status == '7'"}}<h5><span class="badge badge-primary">На контроле</span></h5>{{/js_if}}
+                {{#js_if "this.status == '7'"}}<h5><span class="badge badge-primary">{{date date_under_control}}</span></h5>{{/js_if}}
+
+                {{#js_if "this.status == '4'"}}<h5><span class="badge badge-light">В работе</span></h5>{{/js_if}}
+                {{#js_if "this.status == '4'"}}<h5><span class="badge badge-light">{{date date_in_progress}}</span></h5>{{/js_if}}
+
+                <h5><span class="badge badge-dark">{{days_in_work this}}д</span></h5>
+
+                {{rating rating}}
+            </div>
+
+            {{#if answers.length}}<p class="card-text"><small class="text-muted">Ответы:</small></p>{{/if}}
+
+            <ul class="list-unstyled">
+                {{#answers}}
+                <li class="media problem-answers">
+                    <div class="media-body">
+                        <h6 class="mt-0 mb-1">{{organization}}</h6>
+                        <p>{{text}}</p>
+                        <small class="text-muted">{{date_time publish_date}}</small>
+                    </div>
+                </li>
+                {{/answers}}
+            </ul>
+
+            <a href="http://115.xn--90ais{{href}}" class="card-link" target="_blank">Открыть на 115.бел</a>
+            {{#if comments}}
+            <a href="{{comments}}" target="_blank" role="button" class="btn btn-outline-primary float-right comments-btn">
+                <i class="far fa-comment"></i><span>Комментарии</span>
+            </a>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+</script>
+
+<script>
+    Template7.registerHelper('date_time', function (ruby_datetime, options) {
+        if (typeof ruby_datetime === 'function') ruby_datetime = condition.call(this);
+
+        var date_array = ruby_datetime.substr(0, 10).split('-'),
+            time = ruby_datetime.substr(11, 5);
+        return date_array[2] + '.' + date_array[1] + '.' + date_array[0] + ' ' + time;
+    });
+
+    Template7.registerHelper('date', function (ruby_date, options) {
+        if (typeof ruby_date === 'function') ruby_date = condition.call(this);
+
+        var date_array = ruby_date.substr(0, 10).split('-');
+        return date_array[2] + '.' + date_array[1] + '.' + date_array[0];
+    });
+
+    Template7.registerHelper('days_in_work', function (problem, options) {
+        if (typeof problem === 'function') problem = condition.call(this);
+
+        if(problem.status === '5') {
+            return Math.floor((new Date(problem.date_solve) - new Date(problem.crm_create_at)) / (1000 * 3600 * 24));
+        }
+
+        return Math.floor((new Date() - new Date(problem.crm_create_at)) / (1000 * 3600 * 24));
+    });
+
+    Template7.registerHelper('title', function (category_id, options) {
+        if (typeof category_id === 'function') category_id = condition.call(this);
+
+        if(CATEGORIES[category_id]) {
+            return CATEGORIES[category_id].title;
+        }
+        return category_id;
+    });
+
+    Template7.registerHelper('icon', function (category_id, options) {
+        if (typeof category_id === 'function') category_id = condition.call(this);
+
+        if(CATEGORIES[category_id] && CATEGORIES[category_id].parent_id) {
+            return $('#category-icon-' + CATEGORIES[category_id].parent_id).html();
+        }
+        return '';
+    });
+
+    Template7.registerHelper('rating', function (rating, options) {
+        if (typeof rating === 'function') rating = condition.call(this);
+
+        if(rating != 0) {
+            return '<h5><span class="badge badge-info">{{rating}}<i class="fas fa-star"></i></span></h5>'.replace('{{rating}}', rating);
+        }
+        return '';
+    });
+
+    var template = Template7.compile($('#problem-card-template').html());
+
+    function getFormData() {
+        return {
+            filter: $('.selectpicker.filter-status-btn').val().length === 0 ? null : $('.selectpicker.filter-status-btn').val(),
+            category: $('.selectpicker.filter-category-btn').val().length === 0 ? null : $('.selectpicker.filter-category-btn').val(),
+            organization: $('.selectpicker.filter-org-btn').val().length === 0 ? null : $('.selectpicker.filter-org-btn').val(),
+            order_by: $('.selectpicker.sort-date-btn').val(),
+            order_type: $('.sort-order-btn i').hasClass('fa-sort-amount-down') ? 'desc' : 'asc'
+        };
+    }
+
+    function setFormData(formData) {
+        formData.filter && $('.selectpicker.filter-status-btn').selectpicker('val', formData.filter);
+        formData.category && $('.selectpicker.filter-category-btn').selectpicker('val', formData.category);
+        formData.organization && $('.selectpicker.filter-org-btn').selectpicker('val', formData.organization);
+        formData.order_by && $('.selectpicker.sort-date-btn').selectpicker('val', formData.order_by);
+        formData.order_type && setOrderType(formData.order_type);
+    }
+
+    function setOrderType(order_type) {
+        if(order_type === 'desc') {
+            $('.sort-order-btn i').addClass('fa-sort-amount-down').removeClass('fa-sort-amount-up');
+        } else {
+            $('.sort-order-btn i').addClass('fa-sort-amount-up').removeClass('fa-sort-amount-down');
+        }
+    }
+    function prepareData(data) {
+        var prepared_data = [];
+
+        data.problems.forEach(function (problem) {
+            prepared_data.push($.extend({}, problem, {answers: data.answers[problem.id] || []}));
+        });
+        //console.log(prepared_data);
+        return prepared_data;
+    }
+
+    function update() {
+        var formData = getFormData();
+        window.history.pushState('main', 'GosApi', createURI(formData));
+        $.ajax(endpoint + '/api/v1/problems', {
+            data: formData,
+            success: function (data) {
+                $('.problem-container').empty();
+                prepareData(data).forEach(function (problem) {
+                    $('.problem-container').append(template(problem));
+                });
+            }
+        });
+    }
+
+    function createURI(formData) {
+        var queryParams = $.extend(getQueryParams(), formData),
+            href = window.location.href.substring(0, window.location.href.lastIndexOf('index.html'));
+
+        return href + 'index.html?' + $.param(queryParams);
+    }
+
+    function getQueryParams() {
+        return utils.query(window.location);
+    }
+
+    $(function () {
+        $('.selectpicker').selectpicker();
+
+        $('.sort-order-btn').click(function () {
+            $(this).find('i').toggleClass('fa-sort-amount-down fa-sort-amount-up');
+        });
+
+        $('.apply-filters-btn').click(function () {
+            update();
+        });
+
+        setFormData(getQueryParams());
+        update();
+    });
+</script>
+
+<!-- Дворовые территории | Благоустройство территории -->
+<script id="category-icon-6" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M17.2,4.6l4.3,18.5h2.1L18.5,2.8H6.9L1.4,23.1h2.1L7.8,4.6h1v13.9H6v2.8h13v-2.8h-2.8V4.6H17.2z M14.4,18.5h-3.7V4.6h3.7 V18.5z"></path>
+    </svg>
+</script>
+
+<!-- Дворовые территории | Санитарное состояние -->
+<script id="category-icon-7" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M33.3,17.1c-4,0-7.5,3.2-9.4,6.7c1,0.2,18.3,5.3,18.4,5.3c0.2-0.7,0-1.9,0-2.6C42.2,20.4,39.2,17.1,33.3,17.1z M47.1,2.2 c-0.4-0.8-1.1-1.4-1.9-1.7l-0.5-0.2c-0.4-0.1-0.7-0.2-1.1-0.2c-1.5,0-2.8,0.9-3.3,2.3l-5.9,10.5c0,0.1,0,0.2,0,0.2 c0,0.1,0.1,0.1,0.2,0.1l0.2,0c2.3,0.1,4.8,1,6.3,2.6c0.1,0.1,0.1,0.1,0.2,0c0.1,0,0.1-0.1,0.2-0.1l5.8-10.9 C47.6,3.9,47.5,3,47.1,2.2z M21.2,26.4C17.4,32,8.7,43.4,2.9,49.6c-0.1,0.1-0.1,0.2,0,0.3C2.9,49.9,2.9,50,3,50c0,0,4.9-0.1,5,0 l13.1-10.5c0,0-7.8,10.4-7.9,10.5c0-0.1,5.3,0,5.3,0c0,0.1,7.6-7.6,7.9-7.9c-0.1,0.1-0.4,0.6,0,0c0,0-2.7,7.9-2.6,7.9h5.3 c0.1-0.1,7.9-10.5,7.9-10.5S34.3,50.1,34.3,50c0.2,0,5.2,0,5.2,0c0.3,0,2.8-18.5,2.7-18.4C42.3,31.6,21.2,26.4,21.2,26.4z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Общие проблемы, неисправности, повреждения -->
+<script id="category-icon-9" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M21.9,0h1.8v25h-1.8V0z"></path>
+        <path d="M11.6,0v25h9.3V0H11.6z M14.4,23.1h-1.9v-1.9h1.9V23.1z M14.4,20.4h-1.9v-1.9h1.9V20.4z M14.4,17.6h-1.9v-1.9h1.9V17.6z M14.4,14.8h-1.9V13h1.9V14.8z M14.4,12h-1.9v-1.9h1.9V12z M14.4,9.3h-1.9V7.4h1.9V9.3z M14.4,6.5h-1.9V4.6h1.9V6.5z M14.4,3.7 h-1.9V1.9h1.9V3.7z M17.1,23.1h-1.9v-1.9h1.9V23.1z M17.1,20.4h-1.9v-1.9h1.9V20.4z M17.1,17.6h-1.9v-1.9h1.9V17.6z M17.1,14.8 h-1.9V13h1.9V14.8z M17.1,12h-1.9v-1.9h1.9V12z M17.1,9.3h-1.9V7.4h1.9V9.3z M17.1,6.5h-1.9V4.6h1.9V6.5z M17.1,3.7h-1.9V1.9h1.9 V3.7z M19.9,23.1h-1.9v-1.9h1.9V23.1z M19.9,20.4h-1.9v-1.9h1.9V20.4z M19.9,17.6h-1.9v-1.9h1.9V17.6z M19.9,14.8h-1.9V13h1.9V14.8 z M19.9,12h-1.9v-1.9h1.9V12z M19.9,9.3h-1.9V7.4h1.9V9.3z M18.1,4.6h1.9v1.9h-1.9V4.6z M19.9,3.7h-1.9V1.9h1.9V3.7z"></path>
+        <path display="none" d="M9,10.7h1.2v1.2H9V10.7z"></path>
+        <line fill="none" x1="12.5" y1="13.9" x2="14.4" y2="13.9"></line>
+        <path d="M1.4,13v12h9.3V5.6L1.4,13z M4.2,23.1H2.3v-1.9h1.9V23.1z M4.2,20.4H2.3v-1.9h1.9V20.4z M4.2,17.6H2.3v-1.9h1.9V17.6z M6.9,23.1H5.1v-1.9h1.9V23.1z M6.9,20.4H5.1v-1.9h1.9V20.4z M6.9,17.6H5.1v-1.9h1.9V17.6z M6.9,14.8H5.1V13h1.9V14.8z M9.7,23.1 H7.9v-1.9h1.9V23.1z M9.7,20.4H7.9v-1.9h1.9V20.4z M9.7,17.6H7.9v-1.9h1.9V17.6z M9.7,14.8H7.9V13h1.9V14.8z M9.7,12H7.9v-1.9h1.9 V12z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Электроработы -->
+<script id="category-icon-10" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M18,25c-2.1,0-3.9,0.1-5.3-1c-1-0.7-0.7-2.4-0.7-5c-0.1-0.3,0-1,0-1c-2.7-0.5-4-3.1-4-6v-1l-1-1V6h2V1c0-1.1,0.9-1,1-1 c0,0,1-0.2,1,1v5h4V1c0-1.2,0.9-1,1-1c0,0,1-0.2,1,1v5h2v4l-1,1v1c0,2.6-1.9,5.2-4,6c0,0,0,0.7,0,1c0,0.5,0,1.3,0,2 c0,0.8,0.6,1.7,1,2c0.4,0.3,1.9,0.5,3,0C17.9,23.1,18,24.9,18,25z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Общестроительные работы -->
+<script id="category-icon-11" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M23.4,15.6c-0.1-0.1-0.2-0.3-0.4-0.4c-0.4-0.3-0.8-0.5-1.2-0.6c0.3-4.3-2.3-8.2-6.3-9.6v4.8c-0.1,0.3-0.2,0.9-0.9,0.9 s-0.8-0.5-0.9-0.9V5.4c0-1.1-2.7-1.3-2.7,0v4.4c-0.1,0.3-0.3,0.9-0.9,0.9c-0.6,0-0.8-0.5-0.9-0.9V5c-4,1.4-6.6,5.4-6.3,9.6 C2.4,14.8,2,15,1.7,15.3c-0.1,0.1-0.3,0.2-0.4,0.4c0.2,0.1,0.1,0.2,0.1,0.4c0,0.1,0,0.3,0.1,0.4s0.2,0.3,0.3,0.4 C2,17,2.4,17.2,2.9,17.4c1.3,0.5,2.7,0.8,4.1,1c1.9,0.3,3.8,0.4,5.6,0.4s3.8-0.1,5.6-0.4c1.4-0.2,2.8-0.5,4.1-1 c0.4-0.2,0.7-0.4,1.1-0.6c0.1-0.1,0.2-0.2,0.3-0.4c0.1-0.1,0.1-0.2,0.1-0.4C23.6,15.8,23.5,15.7,23.4,15.6z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Текущий ремонт жилфонда за счет средств плательщиков -->
+<script id="category-icon-12" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M21.9,0h1.8v25h-1.8V0z"></path>
+        <path d="M11.6,0v25h9.3V0H11.6z M14.4,23.1h-1.9v-1.9h1.9V23.1z M14.4,20.4h-1.9v-1.9h1.9V20.4z M14.4,17.6h-1.9v-1.9h1.9V17.6z M14.4,14.8h-1.9V13h1.9V14.8z M14.4,12h-1.9v-1.9h1.9V12z M14.4,9.3h-1.9V7.4h1.9V9.3z M14.4,6.5h-1.9V4.6h1.9V6.5z M14.4,3.7 h-1.9V1.9h1.9V3.7z M17.1,23.1h-1.9v-1.9h1.9V23.1z M17.1,20.4h-1.9v-1.9h1.9V20.4z M17.1,17.6h-1.9v-1.9h1.9V17.6z M17.1,14.8 h-1.9V13h1.9V14.8z M17.1,12h-1.9v-1.9h1.9V12z M17.1,9.3h-1.9V7.4h1.9V9.3z M17.1,6.5h-1.9V4.6h1.9V6.5z M17.1,3.7h-1.9V1.9h1.9 V3.7z M19.9,23.1h-1.9v-1.9h1.9V23.1z M19.9,20.4h-1.9v-1.9h1.9V20.4z M19.9,17.6h-1.9v-1.9h1.9V17.6z M19.9,14.8h-1.9V13h1.9V14.8 z M19.9,12h-1.9v-1.9h1.9V12z M19.9,9.3h-1.9V7.4h1.9V9.3z M18.1,4.6h1.9v1.9h-1.9V4.6z M19.9,3.7h-1.9V1.9h1.9V3.7z"></path>
+        <path display="none" d="M9,10.7h1.2v1.2H9V10.7z"></path>
+        <line fill="none" x1="12.5" y1="13.9" x2="14.4" y2="13.9"></line>
+        <path d="M1.4,13v12h9.3V5.6L1.4,13z M4.2,23.1H2.3v-1.9h1.9V23.1z M4.2,20.4H2.3v-1.9h1.9V20.4z M4.2,17.6H2.3v-1.9h1.9V17.6z M6.9,23.1H5.1v-1.9h1.9V23.1z M6.9,20.4H5.1v-1.9h1.9V20.4z M6.9,17.6H5.1v-1.9h1.9V17.6z M6.9,14.8H5.1V13h1.9V14.8z M9.7,23.1 H7.9v-1.9h1.9V23.1z M9.7,20.4H7.9v-1.9h1.9V20.4z M9.7,17.6H7.9v-1.9h1.9V17.6z M9.7,14.8H7.9V13h1.9V14.8z M9.7,12H7.9v-1.9h1.9 V12z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Неисправность лифта -->
+<script id="category-icon-13" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M18.3,2.6H6.5C5,2.6,3.8,3.8,3.8,5.2v17.1c0,1.5,1.2,2.6,2.7,2.6h11.9c1.5,0,2.7-1.2,2.7-2.6v-17 C20.9,3.8,19.8,2.6,18.3,2.6z M18.3,22.4H6.5V5.3h11.9V22.4z"></path>
+        <path d="M11.8,5.3h1.3v17.1h-1.3V5.3z"></path>
+        <path d="M9.1,0h6.6v1.3H9.1V0z"></path>
+        <path d="M1.4,22.2h22.2V25H1.4V22.2z"></path>
+        <path d="M22.3,10.6h1.3v2.6h-1.3V10.6z"></path><path d="M22.3,14.4h1.3V17h-1.3V14.4z"></path>
+    </svg>
+</script>
+
+<!-- Многоквартирные дома | Санитарное состояние -->
+<script id="category-icon-14" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M21.7,3.6h-4.7V1.2c0-0.5-0.7-1.2-1.2-1.2h-6C9.4,0,8.6,0.7,8.6,1.2v2.4H3.8c-0.4,0-1.2,0.7-1.2,1.2v2.4 c0,0.7,1.2,1.1,1.2,1.1v15.5C3.8,24.6,4.4,25,5,25h15.5c0.8,0,1.2-0.4,1.2-1.2V8.3c0,0,1.2-0.4,1.2-1.2V4 C22.9,3.6,22,3.6,21.7,3.6z M9.7,1.2h5.9v2.4H9.7V1.2z M5,5.9h15.5v1.2H5V5.9z M19.3,22.6H6.2V8.3h2.4v9.5c0,1.5,1.2,1.5,1.2,0 V8.3h2.4v9.5c0,1.4,1.2,1.4,1.2,0V8.3h2.4v9.5c0,1.2,1.2,1.2,1.2,0V8.3h2.4v14.3H19.3z"></path>
+    </svg>
+</script>
+
+<!-- Инфраструктура города | Дороги,  тротуары -->
+<script id="category-icon-20" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M13.7,3.1l0.3,4h-2.9l0.3-4H13.7z M14.1,9.5l0.3,4.7h-3.7l0.3-4.7C10.9,9.5,14.1,9.5,14.1,9.5z M14.1,16.9l1,5.3H9.8 l1-5.3H14.1z M19.4,3.1H5.6L1.4,22.2h22.2L19.4,3.1z"></path>
+    </svg>
+</script>
+
+<!-- Инфраструктура города | Парки, скверы -->
+<script id="category-icon-21" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M18.6,10.9c0.6-0.6,1.1-1.2,1.1-3.2c0-2.2-2.2-3.2-4.4-3.2c0-2.2-1.1-4.4-3.2-4.4c-2.2,0-3.3,2.1-3.3,4.4 c-2.1,0-4.4,1.1-4.4,3.2c0,1.9,0.6,2.6,1.1,3.2c-1.9,0.3-3.2,1.9-3.2,3.9c0,2.7,1.7,4.7,4.4,4.7H11V25h2.1v-5.5h4.4 c2.7,0,4.4-2,4.4-4.7C21.9,12.9,20.6,11.3,18.6,10.9z"></path>
+        <path d="M8.8,22.9h6.5V25H8.8V22.9z"></path>
+    </svg>
+</script>
+
+<!-- Инфраструктура города | Рекламные и информационные конструкции -->
+<script id="category-icon-22" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M23.6,15.5H1.4V2.8h22.2V15.5z M3.5,13.3h18V4.9h-18V13.3z"></path>
+        <path d="M16.2,25H8.8v-2.1h2.1v-8.4h3.1v8.4h2.1V25z"></path>
+        <path d="M15.2,3.9h1V6h-1V3.9z"></path><path d="M8.8,3.9h1V6h-1V3.9z"></path>
+        <path d="M7.7,5.9h3.1v2.1H7.8L7.7,5.9z"></path>
+        <path d="M14.1,5.9h3.1v2.1h-3.1L14.1,5.9z"></path>
+    </svg>
+</script>
+
+<!-- Инфраструктура города | Общественный транспорт, остановки общественного транспорта -->
+<script id="category-icon-23" type="text/html">
+    <svg class="svg-icon" viewBox="0 0 25 25">
+        <path d="M22.8,7.6h-1.2V5.2c0-0.8-0.1-2-0.8-2.3c0,0-2.6-1.3-8.8-1.3c-6.2,0-8.8,1.3-8.8,1.3C2.5,3.2,2.4,4.4,2.4,5.2v2.4H1.2 C0.4,7.6,0,8,0,8.8V10c0,0.8,0.4,1.2,1.2,1.2h1.2V22c0,0.6,0.6,1,1.2,1.2l0,0c0,3.2,3.6,3.3,3.6,0l0,0h9.6l0,0c0,3.2,3.6,3.1,3.6,0 l0,0c0.6-0.2,1.2-0.6,1.2-1.2V11.2h1.2c0.8,0,1.2-0.4,1.2-1.2V8.8C24,8,23.6,7.6,22.8,7.6z M7.2,4.6C7.2,4.3,7.4,4,7.7,4h8.6 c0.3,0,0.5,0.3,0.5,0.6v1.2c0,0.3-0.2,0.6-0.5,0.6H7.7c-0.3,0-0.5-0.3-0.5-0.6V4.6z M4.8,20.8c-0.7,0-1.2-0.5-1.2-1.2 c0-0.7,0.5-1.2,1.2-1.2c0.7,0,1.2,0.5,1.2,1.2C6,20.3,5.5,20.8,4.8,20.8z M19.2,20.8c-0.7,0-1.2-0.5-1.2-1.2c0-0.7,0.5-1.2,1.2-1.2 s1.2,0.5,1.2,1.2C20.4,20.3,19.8,20.8,19.2,20.8z M20.4,14.8c0,0.9-0.2,1.2-1.2,1.2H4.8c-0.9,0-1.2-0.3-1.2-1.2v-6 c0-0.9,0.2-1.2,1.2-1.2h14.4c1,0,1.2,0.1,1.2,1.2V14.8z"></path>
+    </svg>
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-130076879-1');
+</script>
+</body>
+</html>

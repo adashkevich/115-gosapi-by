@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181202045723) do
+ActiveRecord::Schema.define(version: 20190414095327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20181202045723) do
     t.string "old"
     t.string "new"
     t.string "field"
-    t.date "change_date", default: -> { "CURRENT_TIMESTAMP" }
+    t.date "change_date", default: -> { "now()" }
     t.bigint "problem_id"
     t.index ["problem_id"], name: "index_change_logs_on_problem_id"
   end
@@ -51,6 +51,38 @@ ActiveRecord::Schema.define(version: 20181202045723) do
   create_table "fetch_logs", force: :cascade do |t|
     t.json "data"
     t.date "fetch_for"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "map_imports", force: :cascade do |t|
+    t.integer "problem_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "map_items", force: :cascade do |t|
+    t.string "item_type"
+    t.string "coordinates"
+    t.integer "height"
+    t.integer "problem_id"
+    t.string "problem_href"
+    t.boolean "processed"
+    t.string "problem_status"
+    t.string "problem_answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "lock"
+    t.string "submitter_name"
+  end
+
+  create_table "map_photos", force: :cascade do |t|
+    t.string "url", null: false
+    t.string "name", null: false
+    t.integer "size", null: false
+    t.integer "original_id"
+    t.string "system"
+    t.integer "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
