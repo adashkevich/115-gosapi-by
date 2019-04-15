@@ -61,3 +61,5 @@ gem 'active_model_serializers'
 
 #https://github.com/javan/whenever
 gem 'whenever', require: false
+
+#gem 'rswag'
