@@ -3,26 +3,34 @@
 # Server  
 
 ## Installation
+sudo apt-get update  
 sudo apt-get install build-essential  
 sudo apt-get install git  
-sudo apt-get install ruby  
+sudo apt-get install ruby2.3-dev  
 sudo apt-get install lsof  
-sudo mkdir /opt/gosapi/one-one-five-bel  
-sudo groupadd 115-bel-admin  
-sudo usermod -a -G 115-bel-admin andrew.daskhevich  
-git clone https://github.com/adashkevich/one-one-five-bel.git /opt/gosapi/one-one-five-bel  
-sudo chown -R root:115-bel-admin /opt/gosapi/one-one-five-bel  
-sudo chmod -R g+rwx /opt/gosapi/one-one-five-bel  
+sudo mkdir /opt/gosapi/115-gosapi-by   
+sudo groupadd gosapi-admin  
+sudo usermod -a -G gosapi-admin adashkevich  
+sudo chown -R adashkevich:gosapi-admin /opt/gosapi  
+sudo chmod -R g+rwx /opt/gosapi  
+git clone https://github.com/adashkevich/one-one-five-bel.git /opt/gosapi/115-gosapi-by  
 sudo groupadd ruby-admin  
-sudo usermod -a -G ruby-admin andrew.daskhevich  
-sudo chown -R root:ruby-admin /var/lib/gems  
-sudo chmod -R g+rwx /var/lib/gems  
-(optional) sudo apt-get install libpq-dev
+sudo usermod -a -G ruby-admin adashkevich  
+sudo chown -R :ruby-admin /var/lib/gems/  
+sudo chmod -R g+rwx /var/lib/gems/  
+(optional) sudo apt-get install libpq-dev  
 (optional) sudo apt-get install zlib1g-dev  
+cd /opt/gosapi/115-gosapi-by  
 gem install bundler  
 sudo vi /etc/profile.d/115-gosapi-by.sh (then press :esc :wq to save and exit)  
-sudo chown -R root:115-bel-admin /etc/profile.d/115-gosapi-by.sh  
-sudo chmod -R g+rw /etc/profile.d/115-gosapi-by.sh  
+
+sudo chown adashkevich:gosapi-admin /etc/profile.d/gosapi-by.sh
+sudo chown adashkevich:gosapi-admin /etc/profile.d/115-gosapi-by.sh  
+sudo chown adashkevich:gosapi-admin /etc/profile.d/map-gosapi-by.sh  
+sudo chmod g+rw /etc/profile.d/gosapi-by.sh  
+sudo chmod g+rw /etc/profile.d/115-gosapi-by.sh  
+sudo chmod g+rw /etc/profile.d/map-gosapi-by.sh  
+
 sudo dpkg-reconfigure tzdata
 
 ## Life circle

@@ -84,8 +84,8 @@ test:
 #
 production:
   <<: *default
-  host: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_HOST'] %>
-  port: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_PORT'] %>
-  database: one-one-five-bel_production
-  username: one-one-five-bel
-  password: <%= ENV['ONE_ONE_FIVE_BEL_DATABASE_PASSWORD'] %>
+  host: <%= ENV['115_GOSAPI_DATABASE_HOST'] %>
+  port: <%= ENV['115_GOSAPI_DATABASE_PORT'] %>
+  database: 115_gosapi_production
+  username: <%= ENV['MAP_GOSAPI_USERNAME'] %>
+  password: <%= ENV['115_GOSAPI_DATABASE_PASSWORD'] %>
