@@ -8,7 +8,7 @@ sudo apt-get install build-essential
 sudo apt-get install git  
 sudo apt-get install ruby2.3-dev  
 sudo apt-get install lsof  
-sudo mkdir /opt/gosapi/115-gosapi-by   
+sudo mkdir /opt/gosapi/115-gosapi-by  
 sudo groupadd gosapi-admin  
 sudo usermod -a -G gosapi-admin adashkevich  
 sudo chown -R adashkevich:gosapi-admin /opt/gosapi  
@@ -23,6 +23,8 @@ sudo chmod -R g+rwx /var/lib/gems/
 cd /opt/gosapi/115-gosapi-by  
 gem install bundler  
 sudo vi /etc/profile.d/115-gosapi-by.sh (then press :esc :wq to save and exit)  
+sudo chmod og+x /opt/gosapi/115-gosapi-by/bin/startup  
+sudo chmod og+x /opt/gosapi/115-gosapi-by/bin/shutdown  
 
 sudo chown adashkevich:gosapi-admin /etc/profile.d/gosapi-by.sh
 sudo chown adashkevich:gosapi-admin /etc/profile.d/115-gosapi-by.sh  
@@ -34,8 +36,8 @@ sudo chmod g+rw /etc/profile.d/map-gosapi-by.sh
 sudo dpkg-reconfigure tzdata
 
 ## Life circle
-To start up server execute `startup.sh` script. (`./startup.sh`)  
-To shut down server execute `shutdown.sh` script. (`./shutdown.sh`) 
+To start up server execute `bin/startup.sh` script. (`./bin/startup.sh`)  
+To shut down server execute `bin/shutdown.sh` script. (`./bin/shutdown.sh`) 
 #Data Base
 ##Preparation
 1. Add postgis extension
