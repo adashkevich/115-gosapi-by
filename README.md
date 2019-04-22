@@ -23,8 +23,8 @@ sudo chmod -R g+rwx /var/lib/gems/
 cd /opt/gosapi/115-gosapi-by  
 gem install bundler  
 sudo vi /etc/profile.d/115-gosapi-by.sh (then press :esc :wq to save and exit)  
-sudo chmod og+x /opt/gosapi/115-gosapi-by/bin/startup  
-sudo chmod og+x /opt/gosapi/115-gosapi-by/bin/shutdown  
+sudo chmod ug+x /opt/gosapi/115-gosapi-by/bin/startup  
+sudo chmod ug+x /opt/gosapi/115-gosapi-by/bin/shutdown  
 
 sudo chown adashkevich:gosapi-admin /etc/profile.d/gosapi-by.sh
 sudo chown adashkevich:gosapi-admin /etc/profile.d/115-gosapi-by.sh  
@@ -36,8 +36,8 @@ sudo chmod g+rw /etc/profile.d/map-gosapi-by.sh
 sudo dpkg-reconfigure tzdata
 
 ## Life circle
-To start up server execute `bin/startup.sh` script. (`./bin/startup.sh`)  
-To shut down server execute `bin/shutdown.sh` script. (`./bin/shutdown.sh`) 
+To start up server execute `bin/startup` script. (`./bin/startup`)  
+To shut down server execute `bin/shutdown` script. (`./bin/shutdown`)  
 #Data Base
 ##Preparation
 1. Add postgis extension
@@ -58,9 +58,9 @@ City params:
 Status params:
 `MODELS=Status FILE=db/seeds/statuses.rb EXCLUDE=none`
 
-## Ruby Scripts
-Category.where.not(parent_id: nil).order(:parent_id).each { |cat|  p "<option value=\"#{cat.id}\">#{cat.title}</option>"}  
-Category.where(parent_id: nil).order(:id).each { |cat|  p "<optgroup label=\"#{cat.title}\">"}  
+## Cron jobs
+gem install whenever  
+whenever --update-crontab  
 
 ## 3D Party Libraries
 [Select Component](https://developer.snapappointments.com/bootstrap-select)  
