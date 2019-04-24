@@ -46,7 +46,6 @@ class ParseService
 
   def parse_photo(problem_id)
     begin
-      p "http://115.xn--90ais/problem/#{problem_id}"
       problem_page = Nokogiri::HTML(open "http://115.xn--90ais/problem/#{problem_id}")
       photos = problem_page.css('.b-problem-itm__pic').first
 
